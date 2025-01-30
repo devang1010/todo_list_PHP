@@ -1,20 +1,21 @@
 <?php
-    session_start();
+session_start();
 
-    $servername = "localhost";
-    $Username = "root";
-    $Password = "";
-    $database = "todo_list";
+$servername = "localhost";
+$Username = "root";
+$Password = "";
+$database = "todo_list";
 
-    $conn = mysqli_connect($servername, $Username, $Password, $database);
+$conn = mysqli_connect($servername, $Username, $Password, $database);
 
-    if(!$conn){
-        echo "Error connecting to database<br>";
-    }
+if (!$conn) {
+    echo "Error connecting to database<br>";
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -106,6 +107,7 @@
         }
     </style>
 </head>
+
 <body>
     <form method="post" action="signup.php">
         <h3>Sign In</h3>
@@ -117,36 +119,36 @@
         Already have an account? <a href="login.php">Click Here!</a>
     </form>
 </body>
+
 </html>
 
-<?php 
-    if(isset($_POST["signin"])){
-        $username = $_POST["username"];
-        $email = $_POST["email"];
-        $password = $_POST["password"];
-        $confirmPassword = $_POST["confirm_password"];
-        
-        if(empty($username)){
-            echo "Username is empty<br>";
-        }elseif(empty($email)){
-            echo "Email is empty<br>";
-        }elseif(empty($password)){
-            echo "Password is empty<br>";
-        }elseif(empty($confirmPassword)){
-            echo "Confirm Password is empty<br>";
-        }elseif($confirmPassword != $password){
-            echo "Password does not match<br>";
-        }else{
-            $sql = "INSERT INTO `userdetails` (`user_name`, `email`, `password`) VALUES (?, ?, ?)";
-            $stmt = mysqli_prepare($conn, $sql);
-            mysqli_stmt_bind_param($stmt, "sss", $username, $email, $password);
-            if(mysqli_stmt_execute($stmt)){
-                // echo "User is created successfully<br>";
-                header("Location: login.php");
-            }
-            else{
-                echo "Error occurred while creating user<br>";
-            }
+<?php
+if (isset($_POST["signin"])) {
+    $username = $_POST["username"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+    $confirmPassword = $_POST["confirm_password"];
+
+    if (empty($username)) {
+        echo "Username is empty<br>";
+    } elseif (empty($email)) {
+        echo "Email is empty<br>";
+    } elseif (empty($password)) {
+        echo "Password is empty<br>";
+    } elseif (empty($confirmPassword)) {
+        echo "Confirm Password is empty<br>";
+    } elseif ($confirmPassword != $password) {
+        echo "Password does not match<br>";
+    } else {
+        $sql = "INSERT INTO `userdetails` (`user_name`, `email`, `password`) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "sss", $username, $email, $password);
+        if (mysqli_stmt_execute($stmt)) {
+            // echo "User is created successfully<br>";
+            header("Location: login.php");
+        } else {
+            echo "Error occurred while creating user<br>";
         }
     }
+}
 ?>

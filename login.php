@@ -1,19 +1,20 @@
-<?php 
-    session_start();
+<?php
+session_start();
 
-    $servername = "localhost";
-    $Username = "root";
-    $Password = "";
-    $database = "todo_list";
+$servername = "localhost";
+$Username = "root";
+$Password = "";
+$database = "todo_list";
 
-    $conn = mysqli_connect($servername, $Username, $Password, $database);
-    if(!$conn){
-        echo "Error connecting to database<br>";
-    }
+$conn = mysqli_connect($servername, $Username, $Password, $database);
+if (!$conn) {
+    echo "Error connecting to database<br>";
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,6 +106,7 @@
         }
     </style>
 </head>
+
 <body>
     <form action="login.php" method="post">
         <h3>Login</h3>
@@ -115,34 +117,35 @@
         Do not have account? <a href="signup.php">Sign Up here</a>
     </form>
 </body>
+
 </html>
 
-<?php 
-    if(isset($_POST["login"])){
-        $username = $_POST["username"];
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+<?php
+if (isset($_POST["login"])) {
+    $username = $_POST["username"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
 
-        if(empty($username) || empty($email) || empty($password)){
-            echo "Please enter all the fields<br>";
-        }else{
-            $sql = "SELECT * FROM `userdetails` WHERE `user_name` = ? AND `email` = ? AND `password` = ?";
-            $stmt = mysqli_prepare($conn, $sql);
-            mysqli_stmt_bind_param($stmt, "sss", $username, $email, $password);
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
+    if (empty($username) || empty($email) || empty($password)) {
+        echo "Please enter all the fields<br>";
+    } else {
+        $sql = "SELECT * FROM `userdetails` WHERE `user_name` = ? AND `email` = ? AND `password` = ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "sss", $username, $email, $password);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-            if($row = mysqli_fetch_assoc($result)){
-                $_SESSION["serialnumber"] = $row['serial_number'];
-                $_SESSION["username"] = $row["user_name"];
-                $_SESSION["email"] = $row["email"];
-                $_SESSION["password"] = $row["password"];
+        if ($row = mysqli_fetch_assoc($result)) {
+            $_SESSION["serialnumber"] = $row['serial_number'];
+            $_SESSION["username"] = $row["user_name"];
+            $_SESSION["email"] = $row["email"];
+            $_SESSION["password"] = $row["password"];
 
-                header("Location: dashboard.php");
-                exit();
-            }else{
-                echo "Error occurred while authenticating user<br>";
-            }
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            echo "Error occurred while authenticating user<br>";
         }
     }
+}
 ?>
